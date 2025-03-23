@@ -15,7 +15,9 @@ while env.agents:
 
     observations, rewards, terminations, truncations, infos = env.step(actions)
     
+    env.render()
+    
     for agent in env.agents:
-        print(rewards[agent])
+        print(f"{agent} action_space: {rewards[agent]}")
     
 env.close()
