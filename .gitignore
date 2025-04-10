@@ -1,2 +1,5 @@
-/venv
-/venv/*
+/rlvenv
+/rlvenv/*
+/models/
+./logs
+/logs
