@@ -21,10 +21,12 @@ def make_donkey_kong_env(sticky_actions=True, frame_stacking=4, render_mode="rgb
         env_id = "ALE/DonkeyKong-v5"
         grayscale = True
         normalize = False
+        frame_stacking = 4
     elif observation_space == "ram":
         env_id = "ALE/DonkeyKong-ram-v5"
         grayscale = False
-        normalize = True
+        normalize = False
+        frame_stacking = 0
     else:
         raise ValueError("Invalid observation type. Choose 'image' or 'ram'.")
     env = gym.make(env_id, render_mode=render_mode)
@@ -37,7 +39,7 @@ def make_donkey_kong_env(sticky_actions=True, frame_stacking=4, render_mode="rgb
     if normalize:
         env = ss.dtype_v0(env, dtype=np.float32)
         env = ss.normalize_obs_v0(env, env_min=0, env_max=1)
-    
-    env = ss.frame_stack_v1(env, frame_stacking)
+    if frame_stacking > 0:    
+        env = ss.frame_stack_v1(env, frame_stacking)
 
     return env
