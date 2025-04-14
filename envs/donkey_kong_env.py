@@ -18,28 +18,32 @@ def make_donkey_kong_env(sticky_actions=True, frame_stacking=4, render_mode="rgb
         gym.Env: Preprocessed gym environment.
     """
     if observation_space == "image":
-        env_id = "ALE/DonkeyKong-v5"
+        env_id = "ALE/Pong-v5"
         grayscale = True
-        normalize = False
         frame_stacking = 4
     elif observation_space == "ram":
-        env_id = "ALE/DonkeyKong-ram-v5"
+        env_id = "ALE/Pong-ram-v5"
         grayscale = False
-        normalize = False
         frame_stacking = 0
     else:
         raise ValueError("Invalid observation type. Choose 'image' or 'ram'.")
-    env = gym.make(env_id, render_mode=render_mode)
     
+    print(f"\n\nCreating environment with observation space: {observation_space}")
+    print(f"Sticky actions: {sticky_actions}")
+    print(f"Frame stacking: {frame_stacking}")
+    print(f"Grayscale: {grayscale}")
+    print(f"Render mode: {render_mode}\n\n")
+    
+    env = gym.make(env_id, render_mode=render_mode)
     if sticky_actions:
+        print("Adding sticky actions")
         env = ss.sticky_actions_v0(env, repeat_action_probability=0.25)
     if grayscale:
+        print("Converting to grayscale")
         env = ss.color_reduction_v0(env, mode='full')
         env = ss.resize_v1(env, x_size=84, y_size=84)
-    if normalize:
-        env = ss.dtype_v0(env, dtype=np.float32)
-        env = ss.normalize_obs_v0(env, env_min=0, env_max=1)
-    if frame_stacking > 0:    
+    if frame_stacking > 0:
+        print(f"Stacking {frame_stacking} frames")
         env = ss.frame_stack_v1(env, frame_stacking)
-
+        
     return env

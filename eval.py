@@ -26,6 +26,6 @@ def evaluate_model(model, env, n_episodes=10):
 
 if __name__ == "__main__":
         env = make_donkey_kong_env(render_mode="human", observation_space="ram")
-        model = PPO.load("models/trained_model-PPO-ram-50001920.zip")
+        model = PPO.load("models/PPO/ram/model_14200000_steps.zip")
         
         evaluate_model(model, env, n_episodes=5)

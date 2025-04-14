@@ -1,5 +1,6 @@
 /rlvenv
 /rlvenv/*
-/models/
+/models/DQN
+/models/PPO
 ./logs
 /logs

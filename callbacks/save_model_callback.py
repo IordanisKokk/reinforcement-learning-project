@@ -30,8 +30,8 @@ class SaveModelCallback(BaseCallback):
             bool: True to continue training, False to stop.
         """
         if self.n_calls % self.save_freq == 0:
-            model_path = os.path.join(self.save_path, f"model_{self.n_calls}_steps.zip")
+            model_path = os.path.join(self.save_path, f"model_{self.model.num_timesteps}_steps.zip")
             self.model.save(model_path)
             if self.verbose > 0:
-                print(f"Model saved to {model_path} at step {self.n_calls}")
+                print(f"Model saved to {model_path} at step {self.model.num_timesteps}")
         return True
