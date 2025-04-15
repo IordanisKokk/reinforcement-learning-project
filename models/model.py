@@ -52,7 +52,7 @@ class ModelMaker:
                 
         if model == None:    
             if algorithm == "PPO":
-                model = PPO(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{self.observation_space}/pong", device=device.get_device())
+                model = PPO(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{self.observation_space}/pong", device=device.get_device(), **config)
             elif algorithm == "DQN":
                 model = DQN(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{self.observation_space}/pong", device=device.get_device(), **config)
             else:
