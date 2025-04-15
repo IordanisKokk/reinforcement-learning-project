@@ -1,5 +1,8 @@
 /rlvenv
 /rlvenv/*
+./rlwindowsvenv
+.\rlwindowsvenv\*
+/rlwindowsvenv/*
 /models/DQN
 /models/PPO
 ./logs
