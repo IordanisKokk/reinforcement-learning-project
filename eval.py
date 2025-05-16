@@ -1,7 +1,10 @@
-from envs.donkey_kong_env import make_donkey_kong_env
+from envs.environment import make_env
 import gymnasium as gym
 import numpy as np
 from stable_baselines3 import PPO, DQN  # Modify this based on the model type you're testing
+import supersuit as ss
+
+env_id = "ALE/SpaceInvaders-v5"
 
 def evaluate_model(model, env, n_episodes=10):
     """Evaluate a trained model."""
@@ -25,7 +28,14 @@ def evaluate_model(model, env, n_episodes=10):
 
 
 if __name__ == "__main__":
-        env = make_donkey_kong_env(render_mode="human", observation_space="image")
-        model = PPO.load("models/trained_model-PPO-image-5001216.zip")
+        env = gym.make(env_id, render_mode="rgb_array")
+        print("Adding sticky actions")
+        env = ss.sticky_actions_v0(env, repeat_action_probability=0.25)
+        print("Converting to grayscale")
+        env = ss.color_reduction_v0(env, mode="full")
+        env = ss.resize_v1(env, x_size=84, y_size=84)
+        print(f"Stacking {4} frames")
+        env = ss.frame_stack_v1(env, 4)
+        model = PPO.load("models/trained_model-PPO-space-invaders-image-20003328.zip")
         
-        evaluate_model(model, env, n_episodes=5)
+        evaluate_model(model, env, n_episodes=100)

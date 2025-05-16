@@ -1,0 +1,11 @@
+learning_rate: 0.0003
+n_steps: 128        # per env  → 128 × 8 envs = 1 024 samples / update
+batch_size: 1024    # must divide n_envs × n_steps exactly
+n_epochs: 4
+gamma: 0.99
+gae_lambda: 0.95
+clip_range: 0.2
+ent_coef: 0.02      # + exploration pressure
+vf_coef: 0.25       # tone down value-loss weight
+max_grad_norm: 0.5
+target_kl: 0.03     # optional early-stop inside each update

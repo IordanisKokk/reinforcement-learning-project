@@ -4,7 +4,10 @@ import yaml
 import gymnasium as gym
 from stable_baselines3 import PPO, DQN
 from stable_baselines3.common.logger import configure
+from stable_baselines3.common.utils import get_linear_fn
 from utils import device
+
+ENVIRONMENT = "donkey-kong"
 
 class ModelMaker:
     
@@ -17,10 +20,10 @@ class ModelMaker:
     
     def load_config(self, config_path):
         with open(config_path, 'r') as file:
-            return yaml.safe_load(file)
+            return yaml.load(file, Loader=yaml.FullLoader)
         
     def get_latest_model(self, algorithm, observation_space):
-        model_dir = f"./models/{algorithm}/{observation_space}"
+        model_dir = f"./models/{algorithm}/{observation_space}/donkey-kong"
         if not os.path.exists(model_dir):
             print("No Directory found for the specified algorithm and observation space.")
             return None
@@ -34,11 +37,14 @@ class ModelMaker:
 
     def make_model(self):
         model = None
-    
         config = self.load_config(self.config)
         algorithm = self.algorithm.upper()
         policy = "CnnPolicy" if self.observation_space == "image" else "MlpPolicy"
-
+        
+        if algorithm == "PPO" and isinstance(config.get("learning_rate"), (int, float)):
+            start_lr = config["learning_rate"]
+            config["learning_rate"] = get_linear_fn(start_lr, 1e-5, 0.85)
+            
         if self.load_model:
             model_path = self.get_latest_model(algorithm, self.observation_space)
             if model_path:
@@ -52,13 +58,13 @@ class ModelMaker:
                 
         if model == None:    
             if algorithm == "PPO":
-                model = PPO(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{self.observation_space}/pong", device=device.get_device(), **config)
+                model = PPO(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{ENVIRONMENT}/{self.observation_space}", device=device.get_device(), **config)
             elif algorithm == "DQN":
-                model = DQN(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{self.observation_space}/pong", device=device.get_device(), **config)
+                model = DQN(policy, self.env, verbose=1, tensorboard_log=f"./logs/{algorithm}/{ENVIRONMENT}/{self.observation_space}", device=device.get_device(), **config)
             else:
                 raise ValueError("Invalid algorithm. Choose 'PPO' or 'DQN'")
 
-        new_logger = configure(f"./logs/{algorithm}/{self.observation_space}", ["stdout", "csv", "tensorboard"])
+        new_logger = configure(f"./logs/{algorithm}/{ENVIRONMENT}/{self.observation_space}", ["stdout", "csv", "tensorboard"])
         model.set_logger(new_logger)
 
         return model

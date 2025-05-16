@@ -1,0 +1,12 @@
+learning_rate: 0.0000625    # Smaller learning rate; standard for stable DQN on images
+buffer_size: 50000        # Huge replay buffer (important for sample efficiency)
+# optimize_memory_usage: true  # add this
+learning_starts: 50000      # Start learning after collecting enough random experience
+batch_size: 32              # Typical batch size for Atari DQN
+tau: 1.0                    # For soft update (not critical for classic DQN)
+gamma: 0.99                 # Discount factor (long-term planning)
+train_freq: 4               # Learn once every 4 steps (common for frame-skip environments)
+target_update_interval: 10000  # How often to update the target network
+exploration_fraction: 0.1   # Fraction of total timesteps where epsilon decreases
+exploration_final_eps: 0.01 # Final epsilon (how random policy becomes at the end)
+max_grad_norm: 10           # Gradient clipping (helps prevent instability)

@@ -1,0 +1,12 @@
+learning_rate: 0.0001          # Adam LR (Nature DQN used RMSProp 0.00025, SB3 defaults to 1e-4) :contentReference[oaicite:0]{index=0}
+buffer_size: 100000           # 100K transitions replay buffer
+learning_starts: 50000         # collect 50 K random steps before training
+batch_size: 32                 # update on mini‐batches of 32
+gamma: 0.99                    # discount factor
+gradient_steps: 1              # do 1 gradient update per train_freq
+target_update_interval: 10000  # sync target network every 10 K steps
+tau: 1.0                       # hard update (no Polyak averaging)
+exploration_fraction: 0.1      # epsilon decays from 1.0 → final_eps over 10% of total timesteps
+exploration_initial_eps: 1.0
+exploration_final_eps: 0.01    # end‐epsilon :contentReference[oaicite:1]{index=1}
+max_grad_norm: 10   

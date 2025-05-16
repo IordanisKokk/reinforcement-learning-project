@@ -1,0 +1,11 @@
+n_steps: 256          # per env → 256 × 8 = 2 048 samples/update
+batch_size: 2048      # must divide 8×256 exactly
+n_epochs: 4
+gamma: 0.99
+gae_lambda: 0.95
+clip_range: 0.2
+ent_coef: 0.02        # keep exploration alive in sparse regions
+vf_coef: 0.25         # lower weight on value loss for stability
+max_grad_norm: 0.5
+target_kl: 0.03       # early stop an epoch if KL drifts too far
+normalize_advantage: True
